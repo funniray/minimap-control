@@ -1,0 +1,37 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          cache: 'gradle'
+      - name: Build with Maven
+        run: gradle build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Package
+          path: build
+      - name: Bump version and push tag
+        id: tag_version
+        uses: anothrNick/github-tag-action@1.55.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/*"
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
