@@ -1,4 +1,4 @@
-#Minimap Control
+# Minimap Control
 This plugin allows players to control how minimaps mods work per world on Spigot or Sponge based servers.
 
 ## Current Support:
