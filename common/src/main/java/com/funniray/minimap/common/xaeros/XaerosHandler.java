@@ -12,14 +12,13 @@ import dev.dewy.nbt.tags.collection.CompoundTag;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 public class XaerosHandler implements MessageHandler {
     private JavaMinimapPlugin plugin;
 
     public static String XAEROS_CHANNEL = "xaerominimap:main";
+    public static String XAEROS_MAP_CHANNEL = "xaeroworldmap:main";
+
 
     public XaerosHandler(JavaMinimapPlugin plugin) {
         this.plugin = plugin;
@@ -30,6 +29,7 @@ public class XaerosHandler implements MessageHandler {
         out.writeByte(1);
         out.writeInt(2);
         player.sendPluginMessage(out.toByteArray(), XAEROS_CHANNEL);
+        player.sendPluginMessage(out.toByteArray(), XAEROS_MAP_CHANNEL);
     }
 
     public void sendXaerosConfig(MinimapPlayer player) {
@@ -49,6 +49,7 @@ public class XaerosHandler implements MessageHandler {
             new Nbt().toStream(tag, out);
             byte[] arr = out.toByteArray();
             player.sendPluginMessage(arr, XAEROS_CHANNEL);
+            player.sendPluginMessage(out.toByteArray(), XAEROS_MAP_CHANNEL);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

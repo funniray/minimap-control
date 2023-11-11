@@ -24,7 +24,8 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
             "journeymap:teleport_req",
             "journeymap:common",
             "worldinfo:world_id",
-            "xaerominimap:main"
+            "xaerominimap:main",
+            "xaeroworldmap:main"
     );
 
     private final JMHandler jmHandler = new JMHandler(this);
@@ -89,6 +90,7 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
                 jmHandler.onPluginMessage(channel, player, message);
                 break;
             case "xaerominimap":
+            case "xaeroworldmap":
                 xaerosHandler.onPluginMessage(channel, player, message);
                 break;
             case "worldinfo":
