@@ -166,6 +166,15 @@ public class JMHandler implements MessageHandler {
             case "perm_req":
                 handlePerm(player, message, channel, 0);
                 break;
+            case "admin_req":
+                handleAdminReq(player, message, channel, 0);
+                break;
+            case "admin_save":
+                handleAdminSave(player, message, channel, 0);
+                break;
+            case "teleport_req":
+                handleTeleport(player, message, channel, 0);
+                break;
             case "common":
                 ByteArrayDataInput in = ByteStreams.newDataInput(message);
                 byte type = in.readByte();

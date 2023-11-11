@@ -17,9 +17,12 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
     private MinimapConfig config;
 
     private static final List<String> listenChannels = Arrays.asList(
-            "journeymap:perm_req",
-            "journeymap:common",
             "journeymap:version",
+            "journeymap:perm_req",
+            "journeymap:admin_req",
+            "journeymap:admin_save",
+            "journeymap:teleport_req",
+            "journeymap:common",
             "worldinfo:world_id",
             "xaerominimap:main"
     );
