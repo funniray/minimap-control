@@ -1,10 +1,13 @@
 plugins {
     `java-library`
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 }
 
+val versionStr = (System.getenv("VERSION")?: "v1.0.0").removePrefix("v")
+
 group = "com.funniray.minimap"
-version = "1.0"
+version = versionStr
 
 repositories {
     mavenCentral()
@@ -59,4 +62,13 @@ tasks {
             }
         }
     }
+}
+
+bukkit {
+    name = "MinimapControl"
+    main = "com.funniray.minimap.spigot.SpigotMinimap"
+    authors = listOf("funniray")
+    description = "Control minimap settings from server-side software"
+
+    apiVersion = "1.13"
 }
