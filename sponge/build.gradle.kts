@@ -11,15 +11,17 @@ repositories {
     mavenCentral()
 }
 
+val versionStr = (System.getenv("VERSION")?: "v1.0.0").removePrefix("v")
+
 group = "com.funniray.minimap"
-version = "1.0"
+version = versionStr
 
 sponge {
     apiVersion("8.1.0")
     license("All Rights Reserved")
     loader {
         name(PluginLoaders.JAVA_PLAIN)
-        version("1.0")
+        version(versionStr)
     }
     plugin("minimap") {
         displayName("Minimap")

@@ -20,12 +20,6 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
           cache: 'gradle'
-      - name: Build with Gradle
-        run: gradle build
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Package
-          path: build
       - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.55.0
@@ -33,6 +27,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           INITIAL_VERSION: 1.0.0
+      - name: Build with Gradle
+        run: ./gradlew build
+        env:
+          VERSION: ${{ steps.tag_version.outputs.new_tag }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Package
+          path: build
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "build/*"
