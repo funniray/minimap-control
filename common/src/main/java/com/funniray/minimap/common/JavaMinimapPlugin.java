@@ -3,6 +3,7 @@ package com.funniray.minimap.common;
 import com.funniray.minimap.common.api.MinimapPlayer;
 import com.funniray.minimap.common.api.MinimapWorld;
 import com.funniray.minimap.common.jm.JMHandler;
+import com.funniray.minimap.common.voxel.VoxelHandler;
 import com.funniray.minimap.common.worldinfo.WorldInfoHandler;
 import com.funniray.minimap.common.xaeros.XaerosHandler;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -25,12 +26,14 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
             "journeymap:common",
             "worldinfo:world_id",
             "xaerominimap:main",
-            "xaeroworldmap:main"
+            "xaeroworldmap:main",
+            "voxelmap:settings"
     );
 
     private final JMHandler jmHandler = new JMHandler(this);
     private final XaerosHandler xaerosHandler = new XaerosHandler(this);
     private final WorldInfoHandler worldInfoHandler = new WorldInfoHandler(this);
+    private final VoxelHandler voxelHandler = new VoxelHandler(this);
 
     public static JavaMinimapPlugin getInstance() {
         return instance;
@@ -62,12 +65,14 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
     @Override
     public void handleSwitchWorld(MinimapWorld world, MinimapPlayer player) {
         xaerosHandler.sendXaerosConfig(player);
+        voxelHandler.sendSettings(player);
     }
 
     @Override
     public void handlePlayerJoined(MinimapPlayer player) {
         xaerosHandler.sendXaerosHandshake(player);
         xaerosHandler.sendXaerosConfig(player);
+        voxelHandler.sendSettings(player);
     }
 
     public void saveConfig() {
