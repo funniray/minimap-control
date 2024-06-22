@@ -1,0 +1,5 @@
+name: minimapcontrol-proxy
+main: com.funniray.minimap.proxy.BungeePlugin
+version: "1.0"
+author: funniray
+description: Allows plugin messages for MinimapControl to work.

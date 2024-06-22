@@ -4,6 +4,7 @@ This plugin allows players to control how minimaps mods work per world on Spigot
 ## Current Support:
 - Journeymap
 - XaerosMinimap
+- 
 
 Journeymap config options are configurable either in game with journeymap, or via the config file  
 Xaero's minimap is only configurable via the config file.
