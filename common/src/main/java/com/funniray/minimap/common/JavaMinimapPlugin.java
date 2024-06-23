@@ -75,6 +75,11 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
         voxelHandler.sendSettings(player);
     }
 
+    @Override
+    public void handlePlayerLeft(MinimapPlayer player) {
+        jmHandler.playerLeft(player);
+    }
+
     public void saveConfig() {
         try {
             final CommentedConfigurationNode node = getConfigLoader().load();

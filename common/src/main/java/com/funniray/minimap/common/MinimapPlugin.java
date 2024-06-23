@@ -17,4 +17,5 @@ public interface MinimapPlugin {
     ConfigurationLoader<CommentedConfigurationNode> getConfigLoader();
     void handleSwitchWorld(MinimapWorld world, MinimapPlayer player);
     void handlePlayerJoined(MinimapPlayer player);
+    void handlePlayerLeft(MinimapPlayer player);
 }

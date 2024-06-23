@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 public class SpigotServer implements MinimapServer {
     @Override
     public String getMinecraftVersion() {
-        return Bukkit.getVersion();
+        return Bukkit.getBukkitVersion();
     }
 
     @Override
     public String getLoaderVersion() {
-        return Bukkit.getBukkitVersion();
+        return Bukkit.getVersion();
     }
 
     @Override

@@ -27,7 +27,7 @@ public class JMConfig {
     public String villagerRadarEnabled = "true";
     public String animalRadarEnabled = "true";
     public String mobRadarEnabled = "true";
-    public String configVersion = JMVersion.journeymap_version.full;
+    public String configVersion = new JMVersion().journeymap_version.full;
 
     public JMConfig copy() {
         JMConfig clone = new JMConfig();

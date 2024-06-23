@@ -76,6 +76,11 @@ public class SpongeMinimap extends JavaMinimapPlugin {
     }
 
     @Listener
+    public void onLeave(final ServerSideConnectionEvent.Disconnect event) {
+        handlePlayerLeft(SpongePlayer.of(event.player()));
+    }
+
+    @Listener
     public void onSwitchWorld(final ChangeEntityWorldEvent event) {
         if (event.entity() instanceof ServerPlayer) {
             handleSwitchWorld(SpongeWorld.of(event.destinationWorld()), SpongePlayer.of((ServerPlayer) event.entity()));

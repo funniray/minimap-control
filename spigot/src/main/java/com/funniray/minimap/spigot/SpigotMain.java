@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -58,6 +59,11 @@ public class SpigotMain extends JavaMinimapPlugin implements PluginMessageListen
         // The player join event is slightly too early. I unfortunately don't know an event that fires late enough for Xaeros to recognize the packet
         // If anyone knows, please let me know
         plugin.getServer().getScheduler().runTaskLater(plugin, ()->this.handlePlayerJoined(new SpigotPlayer(event.getPlayer())), 40L);
+    }
+
+    @EventHandler
+    public void onLeft(PlayerQuitEvent event) {
+        this.handlePlayerLeft(new SpigotPlayer(event.getPlayer()));
     }
 
     @EventHandler

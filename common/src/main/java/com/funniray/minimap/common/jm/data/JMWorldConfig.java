@@ -16,7 +16,7 @@ public class JMWorldConfig {
     public String villagerRadarEnabled = "true";
     public String animalRadarEnabled = "true";
     public String mobRadarEnabled = "true";
-    public String configVersion = JMVersion.journeymap_version.full;
+    public String configVersion = new JMVersion().journeymap_version.full;
 
     public JMConfig applyToConfig(JMConfig config) {
         if (!enabled.equalsIgnoreCase("true")) return config;
