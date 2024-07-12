@@ -138,10 +138,8 @@ public class JMHandler implements MessageHandler {
     public void handleVersion(MinimapPlayer player, byte[] message, String replyChannel) {
         modernList.put(player.getUniqueId(), message.length > 0 && message[0] != 0);
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        System.out.println(">>> Player connected with version string " + NetworkUtils.readUtf(in));
         Gson gson = new Gson();
         String payload = gson.toJson(new JMVersion());
-        System.out.println("<<< Sent player server version string " + payload);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         if (!modern(player)) out.writeByte(0);
         NetworkUtils.writeUtf(payload, out);
