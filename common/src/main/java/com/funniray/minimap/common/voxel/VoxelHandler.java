@@ -32,7 +32,6 @@ public class VoxelHandler {
         out.writeByte(42);
         NetworkUtils.writeUtf(configJson, out);
         player.sendPluginMessage(out.toByteArray(), VOXEL_SETTINGS_CHANNEL);
-        System.out.println("sent: "+configJson);
     }
 
 }
