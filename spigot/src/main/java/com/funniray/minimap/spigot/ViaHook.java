@@ -7,7 +7,6 @@ import com.funniray.minimap.spigot.impl.SpigotServer;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.ViaAPI;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.protocol.version.VersionType;
 
 import static java.lang.Integer.parseInt;
 
@@ -22,7 +21,8 @@ public class ViaHook {
         int protoVersion = api.getPlayerVersion(((SpigotPlayer)p).getNativePlayer());
         ProtocolVersion version = ProtocolVersion.getProtocol(protoVersion);
 
-        if (version.getVersionType() == VersionType.SPECIAL) {
+        if (!ProtocolVersion.isRegistered(protoVersion)) {
+            SpigotMinimap.getInstance().getLogger().info("ViaVersion returned unknown for player "+p.getUsername()+" (protocol version "+protoVersion+"). This may cause issues if they're using Xaero's minimap. Consider updating ViaVersion");
             return new SpigotServer().getMinecraftVersion();
         }
 

@@ -25,7 +25,7 @@ repositories {
 dependencies {
     // Main Dependencies
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
-    compileOnly("com.viaversion:viaversion-api:5.0.1")
+    compileOnly("com.viaversion:viaversion-api:4.9.2")
     implementation(project(":common"))
 
     // Common Dependencies
@@ -37,7 +37,7 @@ dependencies {
     implementation("net.kyori:adventure-nbt:4.15.0")
 }
 
-val javaTarget = 8
+val javaTarget = 11
 java {
     sourceCompatibility = JavaVersion.toVersion(javaTarget)
     targetCompatibility = JavaVersion.toVersion(javaTarget)
