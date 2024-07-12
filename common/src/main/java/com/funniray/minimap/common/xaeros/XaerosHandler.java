@@ -3,18 +3,18 @@ package com.funniray.minimap.common.xaeros;
 import com.funniray.minimap.common.JavaMinimapPlugin;
 import com.funniray.minimap.common.api.MessageHandler;
 import com.funniray.minimap.common.api.MinimapPlayer;
-import com.funniray.minimap.common.network.NetworkUtils;
+import com.funniray.minimap.common.version.Version;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import dev.dewy.nbt.Nbt;
-import dev.dewy.nbt.tags.collection.CompoundTag;
+import net.kyori.adventure.nbt.BinaryTagIO;
+import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.io.IOException;
 
 public class XaerosHandler implements MessageHandler {
-    private JavaMinimapPlugin plugin;
+    private final JavaMinimapPlugin plugin;
 
     public static String XAEROS_CHANNEL = "xaerominimap:main";
     public static String XAEROS_MAP_CHANNEL = "xaeroworldmap:main";
@@ -41,15 +41,20 @@ public class XaerosHandler implements MessageHandler {
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeByte(4);
-        CompoundTag tag = new CompoundTag();
-        tag.putByte("cm", NetworkUtils.booleanToByte(config.caveMode));
-        tag.putByte("ncm", NetworkUtils.booleanToByte(config.netherCaveMode));
-        tag.putByte("r", NetworkUtils.booleanToByte(config.radar));
+        CompoundBinaryTag tag = CompoundBinaryTag.builder()
+                .putBoolean("cm", config.caveMode)
+                .putBoolean("ncm", config.netherCaveMode)
+                .putBoolean("r", config.radar)
+                .build();
         try {
-            new Nbt().toStream(tag, out);
+            if (player.getVersion().greaterThanEqual(new Version(1,20,3))) {
+                BinaryTagIO.writer().writeNameless(tag, out);
+            } else {
+                BinaryTagIO.writer().write(tag, out);
+            }
             byte[] arr = out.toByteArray();
             player.sendPluginMessage(arr, XAEROS_CHANNEL);
-            player.sendPluginMessage(out.toByteArray(), XAEROS_MAP_CHANNEL);
+            player.sendPluginMessage(arr, XAEROS_MAP_CHANNEL);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

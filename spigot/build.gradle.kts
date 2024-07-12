@@ -17,11 +17,15 @@ repositories {
     maven {
         url = uri("https://oss.sonatype.org/content/groups/public/")
     }
+    maven {
+        url = uri("https://repo.viaversion.com")
+    }
 }
 
 dependencies {
     // Main Dependencies
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("com.viaversion:viaversion-api:5.0.1")
     implementation(project(":common"))
 
     // Common Dependencies
@@ -30,6 +34,7 @@ dependencies {
     implementation("net.kyori:adventure-api:4.10.0")
     implementation("net.kyori:adventure-platform-bukkit:4.3.1")
     implementation("net.kyori:adventure-text-minimessage:4.10.0")
+    implementation("net.kyori:adventure-nbt:4.15.0")
 }
 
 val javaTarget = 8
@@ -46,7 +51,6 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        relocate("dev.dewy.nbt", "com.funniray.minimap.nbt")
         relocate("org.spongepowered.configurate", "com.funniray.minimap.configurate")
         relocate("net.kyori", "com.funniray.minimap.kyori")
         relocate("io.leangen.geantyref", "com.funniray.minimap.geantyref")
@@ -71,4 +75,5 @@ bukkit {
     description = "Control minimap settings from server-side software"
 
     apiVersion = "1.13"
+    softDepend = listOf("viaversion")
 }

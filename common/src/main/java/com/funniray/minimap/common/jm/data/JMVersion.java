@@ -6,7 +6,7 @@ public class JMVersion {
     public VersionDetails journeymap_version = new VersionDetails();
     public String loader_version = JavaMinimapPlugin.getInstance().getServer().getLoaderVersion();
     public String loader = JavaMinimapPlugin.getInstance().getServer().getLoaderName();
-    public String minecraft_version = JavaMinimapPlugin.getInstance().getServer().getMinecraftVersion();
+    public String minecraft_version = JavaMinimapPlugin.getInstance().getServer().getMinecraftVersion().toString();
 
     public static class VersionDetails {
         public String full;

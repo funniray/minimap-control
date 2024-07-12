@@ -3,6 +3,7 @@ package com.funniray.minimap.sponge.impl;
 import com.funniray.minimap.common.api.MinimapPlayer;
 import com.funniray.minimap.common.api.MinimapServer;
 import com.funniray.minimap.common.api.MinimapWorld;
+import com.funniray.minimap.common.version.Version;
 import org.spongepowered.api.Sponge;
 
 import java.util.List;
@@ -11,8 +12,9 @@ import java.util.stream.Collectors;
 public class SpongeServer implements MinimapServer {
 
     @Override
-    public String getMinecraftVersion() {
-        return Sponge.platform().minecraftVersion().name();
+    public Version getMinecraftVersion() {
+//        return Sponge.platform().minecraftVersion().name();
+        return new Version(1,16,5);
     }
 
     @Override

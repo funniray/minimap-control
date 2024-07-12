@@ -2,6 +2,7 @@ package com.funniray.minimap.sponge.impl;
 
 import com.funniray.minimap.common.api.MinimapLocation;
 import com.funniray.minimap.common.api.MinimapPlayer;
+import com.funniray.minimap.common.version.Version;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;
@@ -48,6 +49,11 @@ public class SpongePlayer implements MinimapPlayer {
     @Override
     public boolean hasPermission(String string) {
         return nativePlayer.hasPermission(string);
+    }
+
+    @Override
+    public Version getVersion() {
+        return new SpongeServer().getMinecraftVersion();
     }
 
     @Override

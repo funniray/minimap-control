@@ -66,12 +66,4 @@ public class NetworkUtils {
             }
         }
     }
-
-    public static byte booleanToByte(boolean bool) {
-        if (bool) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
 }

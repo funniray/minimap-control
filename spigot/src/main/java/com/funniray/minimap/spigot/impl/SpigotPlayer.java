@@ -2,6 +2,7 @@ package com.funniray.minimap.spigot.impl;
 
 import com.funniray.minimap.common.api.MinimapLocation;
 import com.funniray.minimap.common.api.MinimapPlayer;
+import com.funniray.minimap.common.version.Version;
 import com.funniray.minimap.spigot.SpigotMinimap;
 import net.kyori.adventure.platform.bukkit.MinecraftComponentSerializer;
 import net.kyori.adventure.text.Component;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class SpigotPlayer implements MinimapPlayer {
-    private Player nativePlayer;
+    private final Player nativePlayer;
 
     public SpigotPlayer(Player player) {
         nativePlayer = player;
@@ -56,5 +57,19 @@ public class SpigotPlayer implements MinimapPlayer {
     @Override
     public boolean hasPermission(String string) {
         return nativePlayer.hasPermission(string);
+    }
+
+    @Override
+    public Version getVersion() {
+        SpigotMinimap plugin = SpigotMinimap.getInstance();
+        if (plugin.viaHooked) {
+            return plugin.viaHook.getPlayerVersion(this);
+        } else {
+            return new SpigotServer().getMinecraftVersion();
+        }
+    }
+
+    public Player getNativePlayer() {
+        return nativePlayer;
     }
 }

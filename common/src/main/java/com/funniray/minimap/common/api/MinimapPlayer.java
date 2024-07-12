@@ -1,5 +1,6 @@
 package com.funniray.minimap.common.api;
 
+import com.funniray.minimap.common.version.Version;
 import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
@@ -14,4 +15,5 @@ public interface MinimapPlayer {
     UUID getUniqueId();
     String getUsername();
     boolean hasPermission(String string);
+    Version getVersion();
 }

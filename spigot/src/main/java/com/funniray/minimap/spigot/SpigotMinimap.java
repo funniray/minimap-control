@@ -7,6 +7,9 @@ public final class SpigotMinimap extends JavaPlugin {
     private static SpigotMinimap instance;
     private final SpigotMain main = new SpigotMain(this);
 
+    public ViaHook viaHook;
+    public boolean viaHooked;
+
     private BukkitAudiences adventure;
 
     public BukkitAudiences adventure() {
@@ -23,6 +26,13 @@ public final class SpigotMinimap extends JavaPlugin {
         this.adventure = BukkitAudiences.create(this);
         getServer().getPluginManager().registerEvents(main, this);
         main.enableSelf();
+
+        try {
+            this.viaHook = new ViaHook();
+            this.viaHooked = true;
+        } catch (ClassNotFoundException | NoClassDefFoundError e ) {
+            // failed to hook viaversion. Expected if viaversion isn't installed.
+        }
     }
 
     @Override

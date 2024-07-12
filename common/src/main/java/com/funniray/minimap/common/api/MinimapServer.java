@@ -1,9 +1,11 @@
 package com.funniray.minimap.common.api;
 
+import com.funniray.minimap.common.version.Version;
+
 import java.util.List;
 
 public interface MinimapServer {
-    String getMinecraftVersion();
+    Version getMinecraftVersion();
     String getLoaderVersion();
     String getLoaderName();
 
