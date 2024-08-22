@@ -3,6 +3,7 @@ package com.funniray.minimap.common;
 import com.funniray.minimap.common.api.MinimapPlayer;
 import com.funniray.minimap.common.api.MinimapWorld;
 import com.funniray.minimap.common.jm.JMHandler;
+import com.funniray.minimap.common.jm.data.JMVersion;
 import com.funniray.minimap.common.voxel.VoxelHandler;
 import com.funniray.minimap.common.worldinfo.WorldInfoHandler;
 import com.funniray.minimap.common.xaeros.XaerosHandler;
@@ -56,6 +57,10 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
             final CommentedConfigurationNode node = getConfigLoader().load();
             config = node.get(MinimapConfig.class);
             node.set(MinimapConfig.class, config);
+            final String version = new JMVersion().journeymap_version.full;
+            config.globalJourneymapConfig.configVersion = version;
+            config.defaultWorldConfig.configVersion = version;
+            config.getWorldConfigs().forEach((world)->world.journeymapConfig.configVersion = version);
             getConfigLoader().save(node);
         } catch (ConfigurateException e) {
             e.printStackTrace();

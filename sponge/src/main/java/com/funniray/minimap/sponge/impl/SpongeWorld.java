@@ -22,6 +22,11 @@ public class SpongeWorld implements MinimapWorld {
     }
 
     @Override
+    public String getKeyedName() {
+        return getName(); // Sponge worlds are already keyed
+    }
+
+    @Override
     public MinimapLocation getLocation(double x, double y, double z) {
         return SpongeLocation.of(nativeWorld.location(new Vector3d(x,y,z)));
     }

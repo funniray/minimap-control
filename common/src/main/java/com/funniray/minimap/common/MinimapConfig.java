@@ -1,5 +1,6 @@
 package com.funniray.minimap.common;
 
+import com.funniray.minimap.common.api.MinimapPlayer;
 import com.funniray.minimap.common.api.MinimapWorld;
 import com.funniray.minimap.common.jm.data.JMConfig;
 import com.funniray.minimap.common.jm.data.JMWorldConfig;
@@ -10,12 +11,14 @@ import com.funniray.minimap.common.xaeros.XaerosWorldConfig;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ConfigSerializable
 public class MinimapConfig {
+    public UUID worldId = UUID.randomUUID();
     public JMConfig globalJourneymapConfig = new JMConfig();
     public XaerosConfig globalXaerosConfig = new XaerosConfig();
     @Comment("Only supports VoxelMap-Updated. See: https://github.com/funniray/minimap-control/issues/1")
@@ -35,6 +38,10 @@ public class MinimapConfig {
         }
 
         return conf;
+    }
+
+    public Collection<WorldConfig> getWorldConfigs() {
+        return worlds.values();
     }
 
     @ConfigSerializable

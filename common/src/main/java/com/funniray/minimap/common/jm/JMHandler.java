@@ -29,6 +29,10 @@ public class JMHandler implements MessageHandler {
         this.plugin = plugin;
     }
 
+    private Optional<MinimapWorld> getWorldFromKeyedName(String keyedWorld) {
+        return JavaMinimapPlugin.getInstance().getServer().getWorlds().stream().filter(w->w.getKeyedName().equals(keyedWorld)).findFirst();
+    }
+
     public void handleMPOptions(MinimapPlayer player, byte[] message, String replyChannel, int replyByte) {
         player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Multiplayer options are not implemented."));
     }
@@ -45,12 +49,10 @@ public class JMHandler implements MessageHandler {
         double z = in.readDouble();
         String dim = NetworkUtils.readUtf(in);
 
-        List<MinimapWorld> worlds = plugin.getServer().getWorlds();
-
-        Optional<MinimapWorld> world = worlds.stream().filter(w->w.getName().equals(dim)).findFirst();
+        Optional<MinimapWorld> world = getWorldFromKeyedName(dim);
 
         if (!world.isPresent()){
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>That world doesn't exist"));
+            player.teleport(player.getLocation().getWorld().getLocation(x,y,z));
             return;
         }
 
@@ -161,7 +163,7 @@ public class JMHandler implements MessageHandler {
         out.writeByte(42);
         out.writeBoolean(player.hasPermission("minimap.jm.admin"));
         NetworkUtils.writeUtf(payload, out);
-        out.writeBoolean(false);
+        out.writeBoolean(true);
         player.sendPluginMessage(out.toByteArray(), replyChannel);
     }
 
