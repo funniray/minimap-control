@@ -16,7 +16,6 @@ import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.awt.print.Pageable;
 import java.util.*;
 
 public class JMHandler implements MessageHandler {
