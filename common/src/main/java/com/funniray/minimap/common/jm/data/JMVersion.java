@@ -13,7 +13,7 @@ public class JMVersion {
         public int major = 6;
         public int minor = 0;
         public int micro = 0;
-        public String patch = "-beta.8";
+        public String patch = null;
 
         public VersionDetails() {
             this.full = String.format("%d.%d.%d%s",major,minor,micro,patch);
