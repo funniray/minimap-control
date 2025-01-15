@@ -11,9 +11,9 @@ public class JMVersion {
     public static class VersionDetails {
         public String full;
         public int major = 6;
-        public int minor = 0;
+        public int minor = 1;
         public int micro = 0;
-        public String patch = null;
+        public String patch = "-beta";
 
         public VersionDetails() {
             this.full = String.format("%d.%d.%d%s",major,minor,micro,patch);
