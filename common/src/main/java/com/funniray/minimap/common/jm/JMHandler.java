@@ -145,9 +145,18 @@ public class JMHandler implements MessageHandler {
 
     public void handleVersion(MinimapPlayer player, byte[] message, String replyChannel) {
         modernList.put(player.getUniqueId(), message.length > 0 && message[0] != 0);
-        ByteArrayDataInput in = ByteStreams.newDataInput(message);
         Gson gson = new Gson();
-        String payload = gson.toJson(new JMVersion());
+        JMVersion serverVersion = new JMVersion();
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        if (!modern(player)) in.readByte();
+
+        String sent = NetworkUtils.readUtf(in);
+        JMVersion clientVersion = gson.fromJson(sent, JMVersion.class);
+        if (clientVersion.journeymap_version.major <= 5) {
+            serverVersion.journeymap_version = new JMVersion.VersionDetails(6,0,0,null);
+        }
+
+        String payload = gson.toJson(serverVersion);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         if (!modern(player)) out.writeByte(0);
         NetworkUtils.writeUtf(payload, out);

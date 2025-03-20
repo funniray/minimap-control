@@ -9,13 +9,21 @@ public class JMVersion {
     public String minecraft_version = JavaMinimapPlugin.getInstance().getServer().getMinecraftVersion().toString();
 
     public static class VersionDetails {
-        public String full;
-        public int major = 6;
-        public int minor = 1;
-        public int micro = 0;
-        public String patch = "-beta";
+        public final String full;
+        public final int major;
+        public final int minor;
+        public final int micro;
+        public final String patch;
 
         public VersionDetails() {
+            this(6,1,0,"-beta99");
+        }
+
+        public VersionDetails(int major, int minor, int micro, String patch) {
+            this.major = major;
+            this.minor = minor;
+            this.micro = micro;
+            this.patch = patch;
             this.full = String.format("%d.%d.%d%s",major,minor,micro,patch);
         }
     }
