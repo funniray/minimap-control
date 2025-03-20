@@ -40,6 +40,12 @@ public class JMHandler implements MessageHandler {
     public void handleTeleport(MinimapPlayer player, byte[] message, String replyChannel, int replyByte) {
         if (!player.hasPermission("minimap.jm.teleport")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize("<red>You don't have permission to teleport."));
+            return;
+        }
+        String teleport = getEffectiveConfig(player).teleportEnabled;
+        if (teleport.equalsIgnoreCase("none") || (teleport.equalsIgnoreCase("ops") && !player.hasPermission("minimap.jm.admin"))) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Teleport packet was sent, but teleporting isn't enabled."));
+            return;
         }
 
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
@@ -148,13 +154,18 @@ public class JMHandler implements MessageHandler {
         player.sendPluginMessage(out.toByteArray(), replyChannel);
     }
 
-    public void handlePerm(MinimapPlayer player, byte[] message, String replyChannel, int replyByte) {
-        modernList.putIfAbsent(player.getUniqueId(), message.length > 0 && message[0] == 42);
+    public JMConfig getEffectiveConfig(MinimapPlayer player) {
         JMWorldConfig worldConfig = plugin.getConfig().getWorldConfig(player.getLocation().getWorld().getName()).journeymapConfig;
         JMConfig config = plugin.getConfig().globalJourneymapConfig;
         if (worldConfig != null) {
-            config = worldConfig.applyToConfig(config);
+            return worldConfig.applyToConfig(config);
         }
+        return config;
+    }
+
+    public void handlePerm(MinimapPlayer player, byte[] message, String replyChannel, int replyByte) {
+        modernList.putIfAbsent(player.getUniqueId(), message.length > 0 && message[0] == 42);
+        JMConfig config = getEffectiveConfig(player);
 
         Gson gson = new Gson();
         String payload = gson.toJson(config);
