@@ -12,6 +12,9 @@ version = versionStr
 repositories {
     mavenCentral()
     maven {
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+    maven {
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
     maven {
@@ -29,6 +32,7 @@ dependencies {
     implementation(project(":common"))
 
     // Common Dependencies
+    implementation("io.papermc:paperlib:1.0.6")
     implementation("org.spongepowered:configurate-core:4.1.2")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
     implementation("net.kyori:adventure-api:4.10.0")
@@ -51,6 +55,7 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
+        relocate("io.papermc.lib", "com.funniray.minimap.paperlib")
         relocate("org.spongepowered.configurate", "com.funniray.minimap.configurate")
         relocate("net.kyori", "com.funniray.minimap.kyori")
         relocate("io.leangen.geantyref", "com.funniray.minimap.geantyref")
