@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @ConfigSerializable
 public class MinimapConfig {
-    public UUID worldId = UUID.randomUUID();
+    public String worldId = UUID.randomUUID().toString();
     public JMConfig globalJourneymapConfig = new JMConfig();
     public XaerosConfig globalXaerosConfig = new XaerosConfig();
     @Comment("Only supports VoxelMap-Updated. See: https://github.com/funniray/minimap-control/issues/1")
@@ -46,7 +46,7 @@ public class MinimapConfig {
 
     @ConfigSerializable
     public static class WorldConfig {
-        public UUID worldId = UUID.randomUUID();
+        public String worldId = UUID.randomUUID().toString();
         public JMWorldConfig journeymapConfig = new JMWorldConfig();
         public XaerosWorldConfig xaerosConfig = new XaerosWorldConfig();
         public VoxelWorldConfig voxelConfig = new VoxelWorldConfig();

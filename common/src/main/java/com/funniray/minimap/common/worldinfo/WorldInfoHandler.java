@@ -20,7 +20,7 @@ public class WorldInfoHandler implements MessageHandler {
     }
 
     public void sendPacket(MinimapPlayer player) {
-        UUID worldId;
+        String worldId;
         // The entire server gets it's own worldId on 1.13
         // worldId on 1.12 and before is per-dimension, as bukkit reuses dimension IDs
         if (player.getVersion().greaterThanEqual(new Version(1,13,0))) {
@@ -31,7 +31,7 @@ public class WorldInfoHandler implements MessageHandler {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeByte(0);
         out.writeByte(42);
-        NetworkUtils.writeUtf(worldId.toString(), out);
+        NetworkUtils.writeUtf(worldId, out);
         player.sendPluginMessage(out.toByteArray(), WORLDINFO_CHANNEL);
     }
 
