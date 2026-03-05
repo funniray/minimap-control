@@ -3,7 +3,9 @@ package com.funniray.minimap.common;
 import com.funniray.minimap.common.api.MinimapPlayer;
 import com.funniray.minimap.common.api.MinimapWorld;
 import com.funniray.minimap.common.jm.JMHandler;
+import com.funniray.minimap.common.jm.data.JMConfig;
 import com.funniray.minimap.common.jm.data.JMVersion;
+import com.funniray.minimap.common.jm.data.JMWorldConfig;
 import com.funniray.minimap.common.voxel.VoxelHandler;
 import com.funniray.minimap.common.worldinfo.WorldInfoHandler;
 import com.funniray.minimap.common.xaeros.XaerosHandler;
@@ -78,12 +80,16 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
         xaerosHandler.sendXaerosHandshake(player);
         xaerosHandler.sendXaerosConfig(player);
         voxelHandler.sendSettings(player);
+        worldInfoHandler.sendPacket(player);
+        if (jmHandler.isLegacy(player)) {
+            jmHandler.handlePerm(player, new byte[0], "journeymap:common", 2);
+        } else {
+            jmHandler.handlePerm(player, new byte[0], "journeymap:perm_req", 0);
+        }
     }
 
     @Override
-    public void handlePlayerLeft(MinimapPlayer player) {
-        jmHandler.playerLeft(player);
-    }
+    public void handlePlayerLeft(MinimapPlayer player) {}
 
     public void saveConfig() {
         try {
@@ -93,6 +99,15 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
         } catch (ConfigurateException e) {
             e.printStackTrace();
         }
+    }
+
+    public JMConfig getEffectiveJMConfig(MinimapPlayer player) {
+        JMWorldConfig worldConfig = this.getConfig().getWorldConfig(player.getLocation().getWorld().getName()).journeymapConfig;
+        JMConfig config = this.getConfig().globalJourneymapConfig;
+        if (worldConfig != null) {
+            return worldConfig.applyToConfig(config);
+        }
+        return config;
     }
 
     public MinimapConfig getConfig() {

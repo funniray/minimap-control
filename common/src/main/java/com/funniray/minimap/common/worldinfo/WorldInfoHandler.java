@@ -3,12 +3,12 @@ package com.funniray.minimap.common.worldinfo;
 import com.funniray.minimap.common.JavaMinimapPlugin;
 import com.funniray.minimap.common.api.MessageHandler;
 import com.funniray.minimap.common.api.MinimapPlayer;
+import com.funniray.minimap.common.jm.data.JMConfig;
 import com.funniray.minimap.common.network.NetworkUtils;
 import com.funniray.minimap.common.version.Version;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
-import java.util.UUID;
 
 public class WorldInfoHandler implements MessageHandler {
     private final JavaMinimapPlugin plugin;
@@ -23,11 +23,17 @@ public class WorldInfoHandler implements MessageHandler {
         String worldId;
         // The entire server gets it's own worldId on 1.13
         // worldId on 1.12 and before is per-dimension, as bukkit reuses dimension IDs
+        JMConfig config = plugin.getEffectiveJMConfig(player);
         if (player.getVersion().greaterThanEqual(new Version(1,13,0))) {
             worldId = plugin.getConfig().worldId;
         } else {
             worldId = plugin.getConfig().getWorldConfig(player.getLocation().getWorld().getName()).worldId;
         }
+
+        if (worldId == null || !config.useWorldId.equalsIgnoreCase("true")) {
+            return;
+        }
+
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeByte(0);
         out.writeByte(42);

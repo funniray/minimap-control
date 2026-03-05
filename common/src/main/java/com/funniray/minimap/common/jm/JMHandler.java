@@ -10,20 +10,17 @@ import com.funniray.minimap.common.jm.data.JMVersion;
 import com.funniray.minimap.common.jm.data.JMWorldConfig;
 import com.funniray.minimap.common.jm.data.ServerPropType;
 import com.funniray.minimap.common.network.NetworkUtils;
+import com.funniray.minimap.common.version.Version;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.awt.print.Pageable;
 import java.util.*;
 
 public class JMHandler implements MessageHandler {
     private final JavaMinimapPlugin plugin;
-    // JM for 1.21 and above no longer has a leading 0 byte at the start of packets.
-    // We need to note who is on a modern version and not send them (or parse) leading 0 bytes
-    private final Map<UUID, Boolean> modernList = new HashMap<>();
 
     public JMHandler(JavaMinimapPlugin plugin) {
         this.plugin = plugin;
@@ -42,7 +39,7 @@ public class JMHandler implements MessageHandler {
             player.sendMessage(MiniMessage.miniMessage().deserialize("<red>You don't have permission to teleport."));
             return;
         }
-        String teleport = getEffectiveConfig(player).teleportEnabled;
+        String teleport = plugin.getEffectiveJMConfig(player).teleportEnabled;
         if (teleport.equalsIgnoreCase("none") || (teleport.equalsIgnoreCase("ops") && !player.hasPermission("minimap.jm.admin"))) {
             player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Teleport packet was sent, but teleporting isn't enabled."));
             return;
@@ -144,7 +141,6 @@ public class JMHandler implements MessageHandler {
     }
 
     public void handleVersion(MinimapPlayer player, byte[] message, String replyChannel) {
-        modernList.put(player.getUniqueId(), message.length > 0 && message[0] != 0);
         Gson gson = new Gson();
         JMVersion serverVersion = new JMVersion();
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
@@ -163,18 +159,8 @@ public class JMHandler implements MessageHandler {
         player.sendPluginMessage(out.toByteArray(), replyChannel);
     }
 
-    public JMConfig getEffectiveConfig(MinimapPlayer player) {
-        JMWorldConfig worldConfig = plugin.getConfig().getWorldConfig(player.getLocation().getWorld().getName()).journeymapConfig;
-        JMConfig config = plugin.getConfig().globalJourneymapConfig;
-        if (worldConfig != null) {
-            return worldConfig.applyToConfig(config);
-        }
-        return config;
-    }
-
     public void handlePerm(MinimapPlayer player, byte[] message, String replyChannel, int replyByte) {
-        modernList.putIfAbsent(player.getUniqueId(), message.length > 0 && message[0] == 42);
-        JMConfig config = getEffectiveConfig(player);
+        JMConfig config = plugin.getEffectiveJMConfig(player);
 
         Gson gson = new Gson();
         String payload = gson.toJson(config);
@@ -187,14 +173,12 @@ public class JMHandler implements MessageHandler {
         player.sendPluginMessage(out.toByteArray(), replyChannel);
     }
 
-    private boolean modern(MinimapPlayer player) {
-        Boolean modern = modernList.get(player.getUniqueId());
-        if (modern == null) return false;
-        return modern;
+    public boolean modern(MinimapPlayer player) {
+        return player.getVersion().greaterThanEqual(new Version(1,21,0));
     }
 
-    public void playerLeft(MinimapPlayer player) {
-        modernList.remove(player.getUniqueId());
+    public boolean isLegacy(MinimapPlayer player) {
+        return !player.getVersion().greaterThanEqual(new Version(1, 18, 0));
     }
 
     @Override
