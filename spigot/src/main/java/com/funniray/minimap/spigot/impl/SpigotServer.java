@@ -17,10 +17,8 @@ public class SpigotServer implements MinimapServer {
         String[] ver = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
         if (ver.length < 3) {
             return new Version(parseInt(ver[0]), parseInt(ver[1]), 0);
-        } else if (ver.length == 3) {
-            return new Version(parseInt(ver[0]), parseInt(ver[1]), parseInt(ver[2]));
         } else {
-            throw new RuntimeException("Cannot parse version "+Bukkit.getBukkitVersion());
+            return new Version(parseInt(ver[0]), parseInt(ver[1]), parseInt(ver[2]));
         }
     }
 
