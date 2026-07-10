@@ -14,8 +14,8 @@ import static java.lang.Integer.parseInt;
 public class SpigotServer implements MinimapServer {
     @Override
     public Version getMinecraftVersion() {
-        String[] ver = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
-        if (ver.length < 3) {
+        String[] ver = Bukkit.getBukkitVersion().split("-", 2)[0].split("\\.");
+        if (ver.length < 3 || !ver[2].matches("\\d+")) {
             return new Version(parseInt(ver[0]), parseInt(ver[1]), 0);
         } else {
             return new Version(parseInt(ver[0]), parseInt(ver[1]), parseInt(ver[2]));
