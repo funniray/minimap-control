@@ -4,7 +4,7 @@ plugins {
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // lowest version with folia-compatible in the plugin-yml is 0.6.0
 }
 
-val versionStr = (System.getenv("VERSION")?: "v1.19.0-Folia-Fork").removePrefix("v")
+val versionStr = (System.getenv("VERSION")?: "v1.19.0").removePrefix("v")
 
 group = "com.funniray.minimap"
 version = versionStr
