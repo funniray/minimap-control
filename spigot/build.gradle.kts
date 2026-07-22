@@ -1,10 +1,10 @@
 plugins {
     `java-library`
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // lowest version with folia-compatible in the plugin-yml is 0.6.0
 }
 
-val versionStr = (System.getenv("VERSION")?: "v1.0.0").removePrefix("v")
+val versionStr = (System.getenv("VERSION")?: "v1.19.0-Folia-Fork").removePrefix("v")
 
 group = "com.funniray.minimap"
 version = versionStr
@@ -76,7 +76,8 @@ tasks {
 bukkit {
     name = "MinimapControl"
     main = "com.funniray.minimap.spigot.SpigotMinimap"
-    authors = listOf("funniray")
+    authors = listOf("funniray", "Thowan")
+    foliaSupported = true
     description = "Control minimap settings from server-side software"
 
     apiVersion = "1.13"

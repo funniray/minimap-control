@@ -11,7 +11,7 @@ repositories {
     mavenCentral()
 }
 
-val versionStr = (System.getenv("VERSION")?: "v1.0.0").removePrefix("v")
+val versionStr = (System.getenv("VERSION")?: "v1.19.0").removePrefix("v")
 
 group = "com.funniray.minimap"
 version = versionStr
