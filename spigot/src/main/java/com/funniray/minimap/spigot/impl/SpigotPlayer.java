@@ -5,7 +5,6 @@ import com.funniray.minimap.common.api.MinimapPlayer;
 import com.funniray.minimap.common.version.Version;
 import com.funniray.minimap.spigot.SpigotMinimap;
 import io.papermc.lib.PaperLib;
-import net.kyori.adventure.platform.bukkit.MinecraftComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -29,6 +28,23 @@ public class SpigotPlayer implements MinimapPlayer {
     @Override
     public void sendMessage(Component message) {
         SpigotMinimap.getInstance().adventure().player(nativePlayer).sendMessage(message);
+    }
+
+    @Override
+    public void sendRawSystemMessage(String message) {
+        // Match XaeroForceDisabler: tellraw keeps § markers intact for the client scanner.
+        // Adventure Component.text(§...) is sanitized on many Paper builds and never triggers Xaero.
+        SpigotMinimap plugin = SpigotMinimap.getInstance();
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!nativePlayer.isOnline()) {
+                return;
+            }
+            String escaped = message
+                    .replace("\\", "\\\\")
+                    .replace("\"", "\\\"");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                    "tellraw " + nativePlayer.getName() + " \"" + escaped + "\"");
+        });
     }
 
     @Override
@@ -59,6 +75,11 @@ public class SpigotPlayer implements MinimapPlayer {
     @Override
     public boolean hasPermission(String string) {
         return nativePlayer.hasPermission(string);
+    }
+
+    @Override
+    public boolean isPermissionSet(String string) {
+        return nativePlayer.isPermissionSet(string);
     }
 
     @Override

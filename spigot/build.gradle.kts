@@ -81,4 +81,19 @@ bukkit {
 
     apiVersion = "1.13"
     softDepend = listOf("viaversion")
+
+    permissions {
+        register("minimap.xaeros.bypass") {
+            description = "Bypass Xaero fair-play system message enforcement"
+            default = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.FALSE
+        }
+        register("minimap.override.cave-mode.enabled") {
+            description = "Explicitly allow Xaero/Voxel cave mode (must be set; OP alone is not enough)"
+            default = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.FALSE
+        }
+        register("minimap.override.radar.enabled") {
+            description = "Explicitly allow Xaero/Voxel radar (must be set; OP alone is not enough)"
+            default = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.FALSE
+        }
+    }
 }

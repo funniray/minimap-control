@@ -57,13 +57,28 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
     public void loadConfig() {
         try {
             final CommentedConfigurationNode node = getConfigLoader().load();
+            final boolean firstSave = node.empty() || node.virtual();
+
             config = node.get(MinimapConfig.class);
-            node.set(MinimapConfig.class, config);
+            if (config == null) {
+                config = new MinimapConfig();
+            }
+
             final String version = new JMVersion().journeymap_version.full;
             config.globalJourneymapConfig.configVersion = version;
             config.defaultWorldConfig.configVersion = version;
-            config.getWorldConfigs().forEach((world)->world.journeymapConfig.configVersion = version);
+            // Populate missing worlds before version stamping so new entries get the version too.
+            config.ensureWorldConfigs(getServer().getWorlds());
+            config.getWorldConfigs().forEach((world) -> world.journeymapConfig.configVersion = version);
+
+            // Serialize after all mutations so the written file matches the live object
+            // (especially important on first save when defaults + worlds must all land together).
+            node.set(MinimapConfig.class, config);
             getConfigLoader().save(node);
+
+            if (firstSave) {
+                System.out.println("[MinimapControl] Created default config with fair-play enabled.");
+            }
         } catch (ConfigurateException e) {
             e.printStackTrace();
         }
@@ -89,9 +104,14 @@ public abstract class JavaMinimapPlugin implements MinimapPlugin {
     }
 
     @Override
-    public void handlePlayerLeft(MinimapPlayer player) {}
+    public void handlePlayerLeft(MinimapPlayer player) {
+        xaerosHandler.forgetPlayer(player);
+    }
 
     public void saveConfig() {
+        if (config == null) {
+            return;
+        }
         try {
             final CommentedConfigurationNode node = getConfigLoader().load();
             node.set(MinimapConfig.class, config);

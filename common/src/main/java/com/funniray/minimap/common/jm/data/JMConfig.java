@@ -32,8 +32,8 @@ public class JMConfig {
     public String surfaceMapping = "ALL";
     public String topoMapping = "ALL";
     public String biomeMapping = "ALL";
-    public String caveMapping = "ALL";
-    public String radarEnabled = "ALL";
+    public String caveMapping = "NONE";
+    public String radarEnabled = "NONE";
     public String playerRadarEnabled = "true";
     public String playerRadarNamesEnabled = "true";
     public String villagerRadarEnabled = "true";

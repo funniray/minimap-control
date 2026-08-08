@@ -52,6 +52,12 @@ public class SpongePlayer implements MinimapPlayer {
     }
 
     @Override
+    public boolean isPermissionSet(String string) {
+        // UNDEFINED means inherited/default only — same idea as Bukkit isPermissionSet.
+        return nativePlayer.permissionValue(string) != org.spongepowered.api.util.Tristate.UNDEFINED;
+    }
+
+    @Override
     public Version getVersion() {
         return new SpongeServer().getMinecraftVersion();
     }
@@ -59,6 +65,17 @@ public class SpongePlayer implements MinimapPlayer {
     @Override
     public void sendMessage(Component message) {
         nativePlayer.sendMessage(message);
+    }
+
+    @Override
+    public void sendRawSystemMessage(String message) {
+        // Prefer a JSON text component so § stays in the text field (same shape as tellraw).
+        String escaped = message
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"");
+        nativePlayer.sendMessage(
+                net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson()
+                        .deserialize("{\"text\":\"" + escaped + "\"}"));
     }
 
     @Override

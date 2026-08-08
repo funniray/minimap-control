@@ -5,14 +5,17 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public class XaerosConfig {
-    public boolean caveMode = true;
-    public boolean netherCaveMode = true;
-    public boolean radar = true;
+    public boolean caveMode = false;
+    public boolean netherCaveMode = false;
+    public boolean radar = false;
 
     private boolean getOverride(String nodeSuffix, boolean def, MinimapPlayer player) {
-        if (player.hasPermission("minimap.override."+nodeSuffix+".enabled")) {
+        // Require an explicitly set node so OP / '*' does not force cave/radar back on.
+        String enabled = "minimap.override." + nodeSuffix + ".enabled";
+        String disabled = "minimap.override." + nodeSuffix + ".disabled";
+        if (player.isPermissionSet(enabled) && player.hasPermission(enabled)) {
             return true;
-        } else if (player.hasPermission("minimap.override."+nodeSuffix+".disabled")) {
+        } else if (player.isPermissionSet(disabled) && player.hasPermission(disabled)) {
             return false;
         }
 
