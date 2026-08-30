@@ -1,11 +1,13 @@
 package com.funniray.minimap.spigot;
 
+import com.funniray.minimap.spigot.scheduler.SchedulerAdapter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SpigotMinimap extends JavaPlugin {
     private static SpigotMinimap instance;
     private final SpigotMain main = new SpigotMain(this);
+    private final SchedulerAdapter scheduler = SchedulerAdapter.create(this);
 
     public ViaHook viaHook;
     public boolean viaHooked;
@@ -48,4 +50,5 @@ public final class SpigotMinimap extends JavaPlugin {
     public static SpigotMinimap getInstance() {
         return instance;
     }
+    public SchedulerAdapter getScheduler() {return scheduler;}
 }

@@ -8,7 +8,6 @@ import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.MinecraftComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -23,7 +22,8 @@ public class SpigotPlayer implements MinimapPlayer {
 
     @Override
     public void sendPluginMessage(byte[] message, String channel) {
-        Bukkit.getScheduler().runTask(SpigotMinimap.getInstance(), ()->nativePlayer.sendPluginMessage(SpigotMinimap.getInstance(), channel, message));
+        SpigotMinimap plugin = SpigotMinimap.getInstance();
+        plugin.getScheduler().runTask(nativePlayer, ()->nativePlayer.sendPluginMessage(plugin, channel, message));
     }
 
     @Override
