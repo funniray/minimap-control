@@ -17,7 +17,7 @@ public final class BukkitSchedulerAdapter implements SchedulerAdapter {
     }
 
     @Override
-    public void runTaskLater(Player player, long delayTicks, Runnable task) {
+    public void runTaskLater(Player player, Runnable task, long delayTicks) {
         Bukkit.getScheduler().runTaskLater(plugin, task, delayTicks);
     }
 }

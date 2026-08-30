@@ -19,7 +19,7 @@ public final class FoliaSchedulerAdapter implements SchedulerAdapter {
     }
 
     @Override
-    public void runTaskLater(Player player, long delayTicks, Runnable task) {
+    public void runTaskLater(Player player, Runnable task, long delayTicks) {
         schedule(player, task, delayTicks);
     }
 

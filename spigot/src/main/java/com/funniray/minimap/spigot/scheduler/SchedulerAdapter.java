@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
 public interface SchedulerAdapter {
     void runTask(Player player, Runnable task);
 
-    void runTaskLater(Player player, long delayTicks, Runnable task);
+    void runTaskLater(Player player, Runnable task, long delayTicks);
 
     static SchedulerAdapter create(Plugin plugin) {
         try {
